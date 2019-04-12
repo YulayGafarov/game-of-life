@@ -11,10 +11,10 @@ class LifeGameVisualizer:
     CELL_COLOR = (69, 139, 0)
     SCREEN_COLOR = (255, 255, 255)
     BLACK = (0, 0, 0)
-    CELL_SIZE = 16
+    CELL_SIZE = 6
     
-    def __init__(self):
-        self.life = Lifegame(60, 60, 0.2)
+    def __init__(self, ncols, nrows, probability=0.2):
+        self.life = Lifegame(ncols, nrows, probability)
         self.screen_width = self.life.ncols * self.CELL_SIZE
         self.screen_height = self.life.nrows * self.CELL_SIZE
         pygame.init()
@@ -60,5 +60,5 @@ class LifeGameVisualizer:
 
 
 if __name__ == '__main__':
-    visualizer = LifeGameVisualizer()
+    visualizer = LifeGameVisualizer(160, 160, 0.8)
     visualizer.run(10)

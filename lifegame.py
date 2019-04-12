@@ -8,7 +8,7 @@ import random
 
 class Lifegame:
 
-    def __init__(self, nrows=90, ncols=90, cell_alive_probability=0.1):
+    def __init__(self, ncols, nrows, cell_alive_probability):
         self.ncols = ncols
         self.nrows = nrows
         self.ncells = 0
