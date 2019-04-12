@@ -8,13 +8,13 @@ import random
 
 class Lifegame:
 
-    def __init__(self, nrows=90, ncols=90):
+    def __init__(self, nrows=90, ncols=90, cell_alive_probability=0.1):
         self.ncols = ncols
         self.nrows = nrows
         self.ncells = 0
         self.generation = 0
         self.field = self._get_new_field()
-        self.randomize_field(0.1)
+        self.randomize_field(cell_alive_probability)
     
     def randomize_field(self, cell_alive_probability):
         for icol in range(self.ncols):
@@ -30,9 +30,9 @@ class Lifegame:
         for icol in range(self.ncols):
             for irow in range(self.nrows):
                 next_generation_field[icol][irow] = self._will_cell_live_in_next_generation(icol, irow)
-                if self.field == 0 and next_generation_field[icol][irow] == 1:
+                if self.field[icol][irow] == 0 and next_generation_field[icol][irow] == 1:
                     self.ncells += 1
-                if self.field == 1 and next_generation_field[icol][irow] == 0:
+                if self.field[icol][irow] == 1 and next_generation_field[icol][irow] == 0:
                     self.ncells -= 1
         self.field = next_generation_field        
         self.generation += 1
