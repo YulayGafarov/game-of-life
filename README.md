@@ -1,3 +1,3 @@
-Conway's Game of Life
+### Conway's Game of Life
 
-my implementation of "Conway's Game of Life" for learning python and pygame
+My implementation of "Conway's Game of Life" for learning python and pygame
