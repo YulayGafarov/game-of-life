@@ -4,9 +4,6 @@ Created on 12 apr. 2019.
 @author: yulay.gafarov
 '''
 import pygame
-import random
-from Tools.scripts.texi2html import increment
-from pygame.image import tostring
 
 
 def calculate():
@@ -37,7 +34,7 @@ if __name__ == '__main__':
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 end = True
-        screen.fill(WHITE)
+        screen.fill(WHITE) 
         pygame.draw.circle(screen, (64, 128, 255), (300, 300), radius, 4)
         radius += inc
         if(radius > 200):
