@@ -62,16 +62,16 @@ class Lifegame:
             nneighbours += 1
         if self.field[col][row - 1] == 1:
             nneighbours += 1
-        if self.field[(col + 1) % (self.ncols - 1)][row - 1] == 1:
+        if self.field[(col + 1) % self.ncols][row - 1] == 1:
             nneighbours += 1
         if self.field[col - 1][row] == 1:
             nneighbours += 1
-        if self.field[(col + 1) % (self.ncols - 1)][row] == 1:
+        if self.field[(col + 1) % self.ncols][row] == 1:
             nneighbours += 1
-        if self.field[col - 1][(row + 1) % (self.nrows - 1)] == 1:
+        if self.field[col - 1][(row + 1) % self.nrows] == 1:
             nneighbours += 1
-        if self.field[col ][(row + 1) % (self.nrows - 1)] == 1:
+        if self.field[col ][(row + 1) % self.nrows ] == 1:
             nneighbours += 1
-        if self.field[(col + 1) % (self.ncols - 1)][(row + 1) % (self.nrows - 1)] == 1:
+        if self.field[(col + 1) % self.ncols][(row + 1) % self.nrows] == 1:
             nneighbours += 1
         return nneighbours
