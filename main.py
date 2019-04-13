@@ -24,13 +24,13 @@ class LifeGameVisualizer:
         
     def showState(self):
         self._drawBackground()
-        for icol in range(self.life.ncols):
-            for irow in range(self.life.nrows):
-                if self.life.field[icol][irow] == 1:
-                    self._drawCell(icol, irow)
+        for cell in self.life.alive_cells:
+            col = cell[0]
+            row = cell[1]
+            self._drawCell(col, row)
         pygame.display.update()
         pygame.display.set_caption('generation: ' + str(self.life.generation) + 
-                                   ', cells: ' + str(self.life.ncells) + ', fps: ' + str(round(self.clock.get_fps(), 2)))
+                                   ', cells: ' + str(len(self.life.alive_cells)) + ', fps: ' + str(round(self.clock.get_fps(), 2)))
     
     def _drawBackground(self):
         self.screen.fill(self.SCREEN_COLOR)
