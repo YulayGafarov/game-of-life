@@ -44,7 +44,7 @@ class LifeGameVisualizer:
 #         pygame.draw.rect(self.screen, self.CELL_COLOR, (icol * self.CELL_SIZE, irow * self.CELL_SIZE, self.CELL_SIZE, self.CELL_SIZE))
         
     def nextState(self):
-        self.life.calculate_next_generation()
+        self.life.set_next_generation_field()
     
     def processEvents(self):
         for event in pygame.event.get():
