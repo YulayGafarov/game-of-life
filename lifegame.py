@@ -58,20 +58,39 @@ class Lifegame:
             
     def _count_neighbours(self, col, row):
         nneighbours = 0
-        if self.field[col - 1][row - 1] == 1:
-            nneighbours += 1
-        if self.field[col][row - 1] == 1:
-            nneighbours += 1
-        if self.field[(col + 1) % self.ncols][row - 1] == 1:
-            nneighbours += 1
-        if self.field[col - 1][row] == 1:
-            nneighbours += 1
-        if self.field[(col + 1) % self.ncols][row] == 1:
-            nneighbours += 1
-        if self.field[col - 1][(row + 1) % self.nrows] == 1:
-            nneighbours += 1
-        if self.field[col ][(row + 1) % self.nrows ] == 1:
-            nneighbours += 1
-        if self.field[(col + 1) % self.ncols][(row + 1) % self.nrows] == 1:
-            nneighbours += 1
+        # border cell will use division operation
+        if(col == self.ncols - 1 or row == self.nrows - 1):
+            if self.field[col - 1][row - 1] == 1:
+                nneighbours += 1
+            if self.field[col][row - 1] == 1:
+                nneighbours += 1
+            if self.field[(col + 1) % self.ncols][row - 1] == 1:
+                nneighbours += 1
+            if self.field[col - 1][row] == 1:
+                nneighbours += 1
+            if self.field[(col + 1) % self.ncols][row] == 1:
+                nneighbours += 1
+            if self.field[col - 1][(row + 1) % self.nrows] == 1:
+                nneighbours += 1
+            if self.field[col][(row + 1) % self.nrows ] == 1:
+                nneighbours += 1
+            if self.field[(col + 1) % self.ncols][(row + 1) % self.nrows] == 1:
+                nneighbours += 1
+        else :
+            if self.field[col - 1][row - 1] == 1:
+                nneighbours += 1
+            if self.field[col][row - 1] == 1:
+                nneighbours += 1
+            if self.field[col + 1][row - 1] == 1:
+                nneighbours += 1
+            if self.field[col - 1][row] == 1:
+                nneighbours += 1
+            if self.field[col + 1][row] == 1:
+                nneighbours += 1
+            if self.field[col - 1][row + 1] == 1:
+                nneighbours += 1
+            if self.field[col][row + 1 ] == 1:
+                nneighbours += 1
+            if self.field[col + 1][row + 1] == 1:
+                nneighbours += 1
         return nneighbours
