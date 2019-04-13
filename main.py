@@ -60,5 +60,5 @@ class LifeGameVisualizer:
 
 
 if __name__ == '__main__':
-    visualizer = LifeGameVisualizer(160, 160, 0.8)
-    visualizer.run(10)
+    visualizer = LifeGameVisualizer(ncols=160, nrows=160)
+    visualizer.run(ticks=60)
