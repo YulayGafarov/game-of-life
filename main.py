@@ -18,6 +18,7 @@ class LifeGameVisualizer:
         self.screen_width = self.life.ncols * self.CELL_SIZE
         self.screen_height = self.life.nrows * self.CELL_SIZE
         pygame.init()
+        self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         self.end = False
         
@@ -28,7 +29,8 @@ class LifeGameVisualizer:
                 if self.life.field[icol][irow] == 1:
                     self._drawCell(icol, irow)
         pygame.display.update()
-        pygame.display.set_caption('generation: ' + str(self.life.generation) + ', cells: ' + str(self.life.ncells))
+        pygame.display.set_caption('generation: ' + str(self.life.generation) + 
+                                   ', cells: ' + str(self.life.ncells) + ', fps: ' + str(round(self.clock.get_fps(), 2)))
     
     def _drawBackground(self):
         self.screen.fill(self.SCREEN_COLOR)
@@ -50,12 +52,11 @@ class LifeGameVisualizer:
                 self.end = True
     
     def run(self, ticks):
-        clock = pygame.time.Clock()
         while not self.end:
             self.showState()
             self.nextState()
             self.processEvents()
-            clock.tick(ticks)
+            self.clock.tick(ticks)
         pygame.quit()
 
 
