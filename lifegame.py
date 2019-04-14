@@ -34,7 +34,7 @@ class Lifegame:
 
     def set_next_generation_field(self):
         n_alive_cells = len(self.alive_cells)
-        if self.nrows * self.ncols <= 9 * n_alive_cells * math.log(n_alive_cells, 2) and False:
+        if self.nrows * self.ncols <= 9 * n_alive_cells * math.log(n_alive_cells, 2) or False:
             self._set_next_generation_by_loop_all_cells()
         else :
             self._set_next_generation_by_loop_alive_cells()
@@ -68,7 +68,6 @@ class Lifegame:
                     if(field_next_generation[icol][irow] == 1):
                         alive_cells_next_generation.append((icol, irow))
                     checked_cells.add((icol, irow))
-        print(len(checked_cells) / len(self.alive_cells))
         self.field = field_next_generation
         self.alive_cells = alive_cells_next_generation
     
