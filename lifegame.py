@@ -4,7 +4,7 @@ Created on Apr 12, 2019
 @author: yulay
 '''
 import random
-import math
+import time
 
 
 class Lifegame:
@@ -17,6 +17,9 @@ class Lifegame:
         self.cells_with_alive_neighbour = []
         self.field = self._get_empty_field()
         self._set_random_init_field(cell_alive_probability)
+        self.time_by_loop_alive_cells = 0
+        self.time_by_loop_all_cells = 0
+        self.by_loop_all_cells_probability = 0.5
 
     def _set_random_init_field(self, cell_alive_probability):
         for icol in range(self.ncols):
@@ -32,16 +35,28 @@ class Lifegame:
     def _cell_alive_with_probability(self, cell_alive_probability):
         return random.random() < cell_alive_probability
 
+    def _balance_method_execution_probability(self):
+        if (hasattr(self, 'time_by_loop_all_cells') and hasattr(self, 'time_by_loop_alive_cells')):
+            if (self.time_by_loop_all_cells > self.time_by_loop_alive_cells):
+                self.by_loop_all_cells_probability -= 0.01
+            else:
+                self.by_loop_all_cells_probability += 0.01
+            if (self.by_loop_all_cells_probability > 0.99):
+                self.by_loop_all_cells_probability = 0.99
+            if (self.by_loop_all_cells_probability < 0.01):
+                self.by_loop_all_cells_probability = 0.01
+
     def set_next_generation_field(self):
-        n_alive_cells = len(self.alive_cells)
-        if self.nrows * self.ncols <= 9 * n_alive_cells * math.log(n_alive_cells, 2) or False:
+        if random.random() < self.by_loop_all_cells_probability:
             self._set_next_generation_by_loop_all_cells()
         else :
             self._set_next_generation_by_loop_alive_cells()
         self.generation += 1
         self._count_neighbours()
+        self._balance_method_execution_probability()
         
     def _set_next_generation_by_loop_all_cells(self):
+        start_time = time.time()
         field_next_generation = self._get_empty_field()
         alive_cells_next_generation = []
         for icol in range(self.ncols):
@@ -51,8 +66,10 @@ class Lifegame:
                     alive_cells_next_generation.append((icol, irow))
         self.field = field_next_generation
         self.alive_cells = alive_cells_next_generation
+        self.time_by_loop_all_cells = time.time() - start_time
         
     def _set_next_generation_by_loop_alive_cells(self):
+        start_time = time.time()
         field_next_generation = self._get_empty_field()
         alive_cells_next_generation = []
         checked_cells = set()
@@ -70,6 +87,7 @@ class Lifegame:
                     checked_cells.add((icol, irow))
         self.field = field_next_generation
         self.alive_cells = alive_cells_next_generation
+        self.time_by_loop_alive_cells = time.time() - start_time
     
     def _will_cell_live_in_next_generation(self, icol, irow):
         nneighbours = self.nneighbours[icol][irow]
