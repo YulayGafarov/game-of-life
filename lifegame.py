@@ -32,7 +32,7 @@ class Lifegame:
         return random.random() < cell_alive_probability
 
     def set_next_generation_field(self):
-        if(len(self.alive_cells) >= int(self.nrows * self.ncols * 0.03)):
+        if(self.nrows * self.ncols <= 10 * len(self.alive_cells)):
             self._set_next_generation_by_loop_all_cells()
         else :
             self._set_next_generation_by_loop_only_alive_cells()
@@ -42,14 +42,11 @@ class Lifegame:
     def _set_next_generation_by_loop_all_cells(self):
         field_next_generation = self._get_new_field()
         alive_cells_next_generation = []
-#         cells_with_alive_neighbour_next_generation = []
         for icol in range(self.ncols):
             for irow in range(self.nrows):
                 field_next_generation[icol][irow] = self._will_cell_live_in_next_generation(icol, irow)
                 if (field_next_generation[icol][irow] == 1):
                     alive_cells_next_generation.append((icol, irow))
-#                     cells_with_alive_neighbour_next_generation.extend(self._get_set_cells_with_alive_neighbour(icol, irow))
-#         self.cells_with_alive_neighbour = cells_with_alive_neighbour_next_generation
         self.field = field_next_generation
         self.alive_cells = alive_cells_next_generation
         
