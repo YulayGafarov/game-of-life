@@ -13,7 +13,7 @@ class Lifegame:
         self.nrows = nrows
         self.generation = 0
         self.alive_cells = []
-        self.cells_with_alive_neighbour = set()
+        self.cells_with_alive_neighbour = []
         self.field = self._get_new_field()
         self._set_random_init_field(cell_alive_probability)
 
@@ -23,38 +23,50 @@ class Lifegame:
                 if self._cell_alive_with_probability(cell_alive_probability):
                     self.field[icol][irow] = 1 
                     self.alive_cells.append((icol, irow))
-                    self.cells_with_alive_neighbour.update(self._get_set_cells_with_alive_neighbour(icol, irow))
+                    self.cells_with_alive_neighbour.extend(self._get_set_cells_with_alive_neighbour(icol, irow))
                 else :
                     self.field[icol][irow] = 0
         self._count_neighbours()
         
     def _cell_alive_with_probability(self, cell_alive_probability):
         return random.random() < cell_alive_probability
-    
+
     def set_next_generation_field(self):
+        if(len(self.alive_cells) >= int(self.nrows * self.ncols * 0.03)):
+            self._set_next_generation_by_loop_all_cells()
+        else :
+            self._set_next_generation_by_loop_only_alive_cells()
+        self.generation += 1
+        self._count_neighbours()
+        
+    def _set_next_generation_by_loop_all_cells(self):
         field_next_generation = self._get_new_field()
         alive_cells_next_generation = []
-        cells_with_alive_neighbour_next_generation = set()
+#         cells_with_alive_neighbour_next_generation = []
+        for icol in range(self.ncols):
+            for irow in range(self.nrows):
+                field_next_generation[icol][irow] = self._will_cell_live_in_next_generation(icol, irow)
+                if (field_next_generation[icol][irow] == 1):
+                    alive_cells_next_generation.append((icol, irow))
+#                     cells_with_alive_neighbour_next_generation.extend(self._get_set_cells_with_alive_neighbour(icol, irow))
+#         self.cells_with_alive_neighbour = cells_with_alive_neighbour_next_generation
+        self.field = field_next_generation
+        self.alive_cells = alive_cells_next_generation
         
-        for cell in self.cells_with_alive_neighbour:
+    def _set_next_generation_by_loop_only_alive_cells(self):
+        field_next_generation = self._get_new_field()
+        alive_cells_next_generation = []
+        cells_with_alive_neighbour_next_generation = []
+        for cell in set(self.cells_with_alive_neighbour):
             icol = cell[0]
             irow = cell[1]
             field_next_generation[icol][irow] = self._will_cell_live_in_next_generation(icol, irow)
             if(field_next_generation[icol][irow] == 1):
                 alive_cells_next_generation.append((icol, irow))
-                cells_with_alive_neighbour_next_generation.update(self._get_set_cells_with_alive_neighbour(icol, irow))
-          
-#         for icol in range(self.ncols):
-#             for irow in range(self.nrows):
-#                 field_next_generation[icol][irow] = self._will_cell_live_in_next_generation(icol, irow)
-#                 if(field_next_generation[icol][irow] == 1):
-#                     alive_cells_next_generation.append((icol, irow))
-                    
+                cells_with_alive_neighbour_next_generation.extend(self._get_set_cells_with_alive_neighbour(icol, irow))
+        self.cells_with_alive_neighbour = cells_with_alive_neighbour_next_generation
         self.field = field_next_generation
         self.alive_cells = alive_cells_next_generation
-        self.cells_with_alive_neighbour = cells_with_alive_neighbour_next_generation
-        self.generation += 1
-        self._count_neighbours()
     
     def _will_cell_live_in_next_generation(self, icol, irow):
         nneighbours = self.nneighbours[icol][irow]
@@ -93,14 +105,14 @@ class Lifegame:
         return self._get_new_field()
 
     def _get_set_cells_with_alive_neighbour(self, col, row):
-        cells_with_alive_neighbour = set()
-        cells_with_alive_neighbour.add(((col - 1 + self.ncols) % self.ncols, (row - 1 + self.nrows) % self.nrows))
-        cells_with_alive_neighbour.add((col , (row - 1 + self.nrows) % self.nrows))
-        cells_with_alive_neighbour.add(((col + 1) % self.ncols, (row - 1 + self.nrows) % self.nrows))
-        cells_with_alive_neighbour.add(((col - 1 + self.ncols) % self.ncols, row))
-        cells_with_alive_neighbour.add((col, row))
-        cells_with_alive_neighbour.add(((col + 1) % self.ncols, row))
-        cells_with_alive_neighbour.add(((col - 1 + self.ncols) % self.ncols, (row + 1) % self.nrows))
-        cells_with_alive_neighbour.add((col , (row + 1) % self.nrows))
-        cells_with_alive_neighbour.add(((col + 1) % self.ncols, (row + 1) % self.nrows))
+        cells_with_alive_neighbour = []
+        cells_with_alive_neighbour.append(((col - 1 + self.ncols) % self.ncols, (row - 1 + self.nrows) % self.nrows))
+        cells_with_alive_neighbour.append((col , (row - 1 + self.nrows) % self.nrows))
+        cells_with_alive_neighbour.append(((col + 1) % self.ncols, (row - 1 + self.nrows) % self.nrows))
+        cells_with_alive_neighbour.append(((col - 1 + self.ncols) % self.ncols, row))
+        cells_with_alive_neighbour.append((col, row))
+        cells_with_alive_neighbour.append(((col + 1) % self.ncols, row))
+        cells_with_alive_neighbour.append(((col - 1 + self.ncols) % self.ncols, (row + 1) % self.nrows))
+        cells_with_alive_neighbour.append((col , (row + 1) % self.nrows))
+        cells_with_alive_neighbour.append(((col + 1) % self.ncols, (row + 1) % self.nrows))
         return cells_with_alive_neighbour
