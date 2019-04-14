@@ -16,17 +16,20 @@ class Lifegame:
         self.cells_with_alive_neighbour = set()
         self.field = self._get_new_field()
         self._set_random_init_field(cell_alive_probability)
-    
+
     def _set_random_init_field(self, cell_alive_probability):
         for icol in range(self.ncols):
             for irow in range(self.nrows):
-                if random.random() < cell_alive_probability:
+                if self._cell_alive_with_probability(cell_alive_probability):
                     self.field[icol][irow] = 1 
                     self.alive_cells.append((icol, irow))
                     self.cells_with_alive_neighbour.update(self._get_set_cells_with_alive_neighbour(icol, irow))
                 else :
                     self.field[icol][irow] = 0
         self._count_neighbours()
+        
+    def _cell_alive_with_probability(self, cell_alive_probability):
+        return random.random() < cell_alive_probability
     
     def set_next_generation_field(self):
         field_next_generation = self._get_new_field()
@@ -52,15 +55,6 @@ class Lifegame:
         self.cells_with_alive_neighbour = cells_with_alive_neighbour_next_generation
         self.generation += 1
         self._count_neighbours()
-        
-    def _get_new_field(self):
-        new_field = [0] * self.ncols
-        for icol in range(self.ncols):
-            new_field[icol] = [0] * self.nrows
-        return new_field
-
-    def _get_empty_neighbours_counter(self):
-        return self._get_new_field()
     
     def _will_cell_live_in_next_generation(self, icol, irow):
         nneighbours = self.nneighbours[icol][irow]
@@ -75,19 +69,6 @@ class Lifegame:
             else:
                 return True
 
-    def _get_set_cells_with_alive_neighbour(self, col, row):
-        cells_with_alive_neighbour = set()
-        cells_with_alive_neighbour.add((col - 1, row - 1))
-        cells_with_alive_neighbour.add((col , row - 1))
-        cells_with_alive_neighbour.add(((col + 1) % self.ncols, row - 1))
-        cells_with_alive_neighbour.add((col - 1, row))
-        cells_with_alive_neighbour.add((col, row))
-        cells_with_alive_neighbour.add(((col + 1) % self.ncols, row))
-        cells_with_alive_neighbour.add((col - 1, (row + 1) % self.nrows))
-        cells_with_alive_neighbour.add((col , (row + 1) % self.nrows))
-        cells_with_alive_neighbour.add(((col + 1) % self.ncols, (row + 1) % self.nrows))
-        return cells_with_alive_neighbour
-            
     def _count_neighbours(self):
         self.nneighbours = self._get_empty_neighbours_counter()
         for cell in self.alive_cells:
@@ -101,3 +82,25 @@ class Lifegame:
             self.nneighbours[col - 1][(row + 1) % self.nrows] += 1
             self.nneighbours[col][(row + 1) % self.nrows] += 1
             self.nneighbours[(col + 1) % self.ncols][(row + 1) % self.nrows] += 1
+            
+    def _get_new_field(self):
+        new_field = [0] * self.ncols
+        for icol in range(self.ncols):
+            new_field[icol] = [0] * self.nrows
+        return new_field
+
+    def _get_empty_neighbours_counter(self):
+        return self._get_new_field()
+
+    def _get_set_cells_with_alive_neighbour(self, col, row):
+        cells_with_alive_neighbour = set()
+        cells_with_alive_neighbour.add((col - 1, row - 1))
+        cells_with_alive_neighbour.add((col , row - 1))
+        cells_with_alive_neighbour.add(((col + 1) % self.ncols, row - 1))
+        cells_with_alive_neighbour.add((col - 1, row))
+        cells_with_alive_neighbour.add((col, row))
+        cells_with_alive_neighbour.add(((col + 1) % self.ncols, row))
+        cells_with_alive_neighbour.add((col - 1, (row + 1) % self.nrows))
+        cells_with_alive_neighbour.add((col , (row + 1) % self.nrows))
+        cells_with_alive_neighbour.add(((col + 1) % self.ncols, (row + 1) % self.nrows))
+        return cells_with_alive_neighbour
