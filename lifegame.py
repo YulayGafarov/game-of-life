@@ -94,6 +94,10 @@ class Lifegame:
 
     def _get_set_cells_with_alive_neighbour(self, col, row):
         cells_with_alive_neighbour = set()
+        if(row < 0):
+            row = row + self.nrows
+        if(col < 0):
+            col = col + self.ncols
         cells_with_alive_neighbour.add((col - 1, row - 1))
         cells_with_alive_neighbour.add((col , row - 1))
         cells_with_alive_neighbour.add(((col + 1) % self.ncols, row - 1))
