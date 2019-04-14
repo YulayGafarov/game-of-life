@@ -35,7 +35,7 @@ class Lifegame:
         if(self.nrows * self.ncols <= 10 * len(self.alive_cells)):
             self._set_next_generation_by_loop_all_cells()
         else :
-            self._set_next_generation_by_loop_only_alive_cells()
+            self._set_next_generation_by_loop_neightbours()
         self.generation += 1
         self._count_neighbours()
         
@@ -50,7 +50,7 @@ class Lifegame:
         self.field = field_next_generation
         self.alive_cells = alive_cells_next_generation
         
-    def _set_next_generation_by_loop_only_alive_cells(self):
+    def _set_next_generation_by_loop_neightbours(self):
         field_next_generation = self._get_new_field()
         alive_cells_next_generation = []
         cells_with_alive_neighbour_next_generation = []
