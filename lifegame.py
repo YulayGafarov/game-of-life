@@ -36,19 +36,19 @@ class Lifegame:
         alive_cells_next_generation = []
         cells_with_alive_neighbour_next_generation = set()
         
-#         for cell in self.cells_with_alive_neighbour:
-#             icol = cell[0]
-#             irow = cell[1]
-#             field_next_generation[icol][irow] = self._will_cell_live_in_next_generation(icol, irow)
-#             if(field_next_generation[icol][irow] == 1):
-#                 alive_cells_next_generation.append((icol, irow))
-#                 cells_with_alive_neighbour_next_generation.update(self._get_set_cells_with_alive_neighbour(icol, irow))
+        for cell in self.cells_with_alive_neighbour:
+            icol = cell[0]
+            irow = cell[1]
+            field_next_generation[icol][irow] = self._will_cell_live_in_next_generation(icol, irow)
+            if(field_next_generation[icol][irow] == 1):
+                alive_cells_next_generation.append((icol, irow))
+                cells_with_alive_neighbour_next_generation.update(self._get_set_cells_with_alive_neighbour(icol, irow))
           
-        for icol in range(self.ncols):
-            for irow in range(self.nrows):
-                field_next_generation[icol][irow] = self._will_cell_live_in_next_generation(icol, irow)
-                if(field_next_generation[icol][irow] == 1):
-                    alive_cells_next_generation.append((icol, irow))
+#         for icol in range(self.ncols):
+#             for irow in range(self.nrows):
+#                 field_next_generation[icol][irow] = self._will_cell_live_in_next_generation(icol, irow)
+#                 if(field_next_generation[icol][irow] == 1):
+#                     alive_cells_next_generation.append((icol, irow))
                     
         self.field = field_next_generation
         self.alive_cells = alive_cells_next_generation
@@ -94,17 +94,13 @@ class Lifegame:
 
     def _get_set_cells_with_alive_neighbour(self, col, row):
         cells_with_alive_neighbour = set()
-        if(row < 0):
-            row = row + self.nrows
-        if(col < 0):
-            col = col + self.ncols
-        cells_with_alive_neighbour.add((col - 1, row - 1))
-        cells_with_alive_neighbour.add((col , row - 1))
-        cells_with_alive_neighbour.add(((col + 1) % self.ncols, row - 1))
-        cells_with_alive_neighbour.add((col - 1, row))
+        cells_with_alive_neighbour.add(((col - 1 + self.ncols) % self.ncols, (row - 1 + self.nrows) % self.nrows))
+        cells_with_alive_neighbour.add((col , (row - 1 + self.nrows) % self.nrows))
+        cells_with_alive_neighbour.add(((col + 1) % self.ncols, (row - 1 + self.nrows) % self.nrows))
+        cells_with_alive_neighbour.add(((col - 1 + self.ncols) % self.ncols, row))
         cells_with_alive_neighbour.add((col, row))
         cells_with_alive_neighbour.add(((col + 1) % self.ncols, row))
-        cells_with_alive_neighbour.add((col - 1, (row + 1) % self.nrows))
+        cells_with_alive_neighbour.add(((col - 1 + self.ncols) % self.ncols, (row + 1) % self.nrows))
         cells_with_alive_neighbour.add((col , (row + 1) % self.nrows))
         cells_with_alive_neighbour.add(((col + 1) % self.ncols, (row + 1) % self.nrows))
         return cells_with_alive_neighbour
