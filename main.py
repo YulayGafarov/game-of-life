@@ -30,7 +30,8 @@ class LifeGameVisualizer:
             self._drawCell(col, row)
         pygame.display.update()
         pygame.display.set_caption('generation: ' + str(self.life.generation) + 
-                                   ', cells: ' + str(len(self.life.alive_cells)) + ', fps: ' + str(round(self.clock.get_fps(), 2)))
+                                   ', cells: ' + str(len(self.life.alive_cells)) + 
+                                   ', fps: ' + str(round(self.clock.get_fps(), 2)))
     
     def _drawBackground(self):
         self.screen.fill(self.SCREEN_COLOR)
